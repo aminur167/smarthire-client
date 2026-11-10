@@ -6,3 +6,4 @@
 2026-11-10 12:50:15 - style(ui): customize scrollbar styles and card transitions in index.css
 2026-11-10 15:40:30 - refactor(api): add automatic token refresh handling on 401 response
 2026-11-10 18:15:20 - test: verify auth token persistence in localStorage across reloads
+2026-11-10 21:30:00 - fix(forms): prevent multiple form submissions during pending requests
