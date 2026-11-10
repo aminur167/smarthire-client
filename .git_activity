@@ -2,3 +2,4 @@
 2026-11-04 15:55:20 - style(dashboard): refine badge colors and card shadows to match spec
 2026-11-04 18:40:10 - refactor(dashboard): add skeleton loader states for slow network connections
 2026-11-09 19:20:40 - refactor(routes): configure ProtectedRoute and PublicRoute auth guards in App.jsx
+2026-11-10 09:25:50 - feat(notifications): add real-time notification toasts using react-hot-toast
