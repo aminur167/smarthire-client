@@ -8,3 +8,4 @@
 2026-11-10 18:15:20 - test: verify auth token persistence in localStorage across reloads
 2026-11-10 21:30:00 - fix(forms): prevent multiple form submissions during pending requests
 2026-11-11 10:15:20 - feat(ui): add tooltips for sidebar icons and truncated text cells
+2026-11-11 13:30:45 - fix(interviews): format ISO datetime to localized recruiter format
