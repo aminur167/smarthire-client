@@ -13,3 +13,4 @@
 2026-11-11 19:05:35 - style: enhance active route indicator styles in subnav and sidebar
 2026-11-12 09:35:10 - feat(search): add instant candidate filtering by name and primary skill
 2026-11-12 12:40:30 - perf: memoize expensive candidate score calculations with useMemo
+2026-11-12 15:45:20 - fix(dashboard): handle empty job list state with friendly CTA card
