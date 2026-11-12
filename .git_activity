@@ -11,3 +11,4 @@
 2026-11-11 13:30:45 - fix(interviews): format ISO datetime to localized recruiter format
 2026-11-11 16:20:10 - refactor(components): extract reusable CandidateStatusBadge component
 2026-11-11 19:05:35 - style: enhance active route indicator styles in subnav and sidebar
+2026-11-12 09:35:10 - feat(search): add instant candidate filtering by name and primary skill
