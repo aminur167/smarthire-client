@@ -16,3 +16,4 @@
 2026-11-12 15:45:20 - fix(dashboard): handle empty job list state with friendly CTA card
 2026-11-12 18:25:50 - refactor(auth): clear stored credentials immediately on manual logout
 2026-11-12 21:10:00 - style(responsive): refine grid column breakpoints for smaller screens
+2026-11-13 10:20:40 - feat(reports): add department hiring distribution donut chart
