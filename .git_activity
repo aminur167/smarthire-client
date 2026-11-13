@@ -18,3 +18,4 @@
 2026-11-12 21:10:00 - style(responsive): refine grid column breakpoints for smaller screens
 2026-11-13 10:20:40 - feat(reports): add department hiring distribution donut chart
 2026-11-13 13:15:15 - feat(reports): add application velocity area chart with time range selector
+2026-11-13 16:30:45 - fix(candidates): validate pdf and docx file extensions before upload
