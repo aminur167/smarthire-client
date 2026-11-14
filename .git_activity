@@ -22,3 +22,4 @@
 2026-11-13 19:15:20 - refactor(api): sanitize query params for empty search queries
 2026-11-14 12:45:50 - chore: setup production build scripts and bundle visualizer config
 2026-11-14 15:25:10 - refactor(components): standardize modal close on escape key and backdrop click
+2026-11-14 18:40:35 - fix(navbar): resolve avatar initials fallback when user profile is loading
