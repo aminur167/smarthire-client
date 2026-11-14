@@ -20,3 +20,4 @@
 2026-11-13 13:15:15 - feat(reports): add application velocity area chart with time range selector
 2026-11-13 16:30:45 - fix(candidates): validate pdf and docx file extensions before upload
 2026-11-13 19:15:20 - refactor(api): sanitize query params for empty search queries
+2026-11-14 12:45:50 - chore: setup production build scripts and bundle visualizer config
