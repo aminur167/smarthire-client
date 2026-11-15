@@ -24,3 +24,4 @@
 2026-11-14 15:25:10 - refactor(components): standardize modal close on escape key and backdrop click
 2026-11-14 18:40:35 - fix(navbar): resolve avatar initials fallback when user profile is loading
 2026-11-14 21:25:00 - test: run vite build and verify zero bundle warnings
+2026-11-15 10:10:15 - feat(layout): implement expandable and collapsible sidebar drawer state
