@@ -26,3 +26,4 @@
 2026-11-14 21:25:00 - test: run vite build and verify zero bundle warnings
 2026-11-15 10:10:15 - feat(layout): implement expandable and collapsible sidebar drawer state
 2026-11-15 13:35:40 - feat(sidebar): add smooth slide animation, backdrop overlay, and badges
+2026-11-15 16:20:30 - feat(navbar): add hamburger toggle button and persistent state in localStorage
