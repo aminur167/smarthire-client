@@ -29,3 +29,4 @@
 2026-11-15 16:20:30 - feat(navbar): add hamburger toggle button and persistent state in localStorage
 2026-11-15 19:05:15 - fix(layout): adjust main container margin and top bar offset on toggle
 2026-11-16 09:40:20 - refactor(ui): fine-tune color gradients, hover states, and typography
+2026-11-16 12:15:35 - fix(sidebar): ensure mobile drawer auto-closes upon navigating to route
