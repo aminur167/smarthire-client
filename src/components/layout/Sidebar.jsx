@@ -11,22 +11,81 @@ import {
   ChevronLeft,
   Sparkles,
   ShieldCheck,
+  Crown,
+  UserCheck,
+  FileText,
+  Activity,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
-const links = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
-  { to: '/applications', icon: FolderOpen, label: 'Applications', badge: '21' },
-  { to: '/jobs', icon: Briefcase, label: 'Jobs Overview', badge: '10' },
-  { to: '/talent-pool', icon: Users, label: 'Talent Pool', badge: '15' },
-  { to: '/interviews', icon: CalendarDays, label: 'Interviews', badge: '8' },
-  { to: '/reports', icon: BarChart3, label: 'Analytics & Reports', badge: null },
-  { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: '3' },
-  { to: '/profile', icon: Settings, label: 'Settings', badge: null },
-];
-
 export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
   const { user } = useAuth();
+  const role = user?.role || 'RECRUITER';
+
+  // Role-Specific Navigation Links
+  const getNavLinks = () => {
+    if (role === 'ADMIN') {
+      return [
+        { to: '/dashboard', icon: LayoutDashboard, label: 'Admin Console', badge: null },
+        { to: '/talent-pool', icon: Users, label: 'User Directory', badge: '18' },
+        { to: '/jobs', icon: Briefcase, label: 'Job Moderation', badge: '10' },
+        { to: '/applications', icon: FolderOpen, label: 'Applications Audit', badge: '21' },
+        { to: '/interviews', icon: CalendarDays, label: 'Interviews Schedule', badge: '8' },
+        { to: '/reports', icon: BarChart3, label: 'Platform Telemetry', badge: null },
+        { to: '/profile', icon: Settings, label: 'System Settings', badge: null },
+      ];
+    }
+
+    if (role === 'CANDIDATE') {
+      return [
+        { to: '/dashboard', icon: LayoutDashboard, label: 'Career Dashboard', badge: null },
+        { to: '/jobs', icon: Briefcase, label: 'Explore Open Jobs', badge: '10' },
+        { to: '/applications', icon: FileText, label: 'My Applications', badge: null },
+        { to: '/interviews', icon: CalendarDays, label: 'My Interviews', badge: null },
+        { to: '/profile', icon: Sparkles, label: 'Resume & Skills AI', badge: null },
+        { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: '3' },
+      ];
+    }
+
+    // Default: RECRUITER
+    return [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'ATS Dashboard', badge: null },
+      { to: '/applications', icon: FolderOpen, label: 'Candidate Pipeline', badge: '21' },
+      { to: '/jobs', icon: Briefcase, label: 'Job Openings', badge: '10' },
+      { to: '/talent-pool', icon: Users, label: 'AI Talent Pool', badge: '15' },
+      { to: '/interviews', icon: CalendarDays, label: 'Interviews', badge: '8' },
+      { to: '/reports', icon: BarChart3, label: 'Hiring Analytics', badge: null },
+      { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: '3' },
+      { to: '/profile', icon: Settings, label: 'Profile Settings', badge: null },
+    ];
+  };
+
+  const links = getNavLinks();
+
+  const getRoleBadge = () => {
+    if (role === 'ADMIN') {
+      return {
+        label: 'Platform Admin',
+        color: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        icon: Crown,
+      };
+    }
+    if (role === 'CANDIDATE') {
+      return {
+        label: 'Job Seeker',
+        color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        icon: UserCheck,
+      };
+    }
+    return {
+      label: 'Verified Recruiter',
+      color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+      icon: ShieldCheck,
+    };
+  };
+
+  const roleBadge = getRoleBadge();
+  const RoleBadgeIcon = roleBadge.icon;
 
   return (
     <>
@@ -41,7 +100,7 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-indigo-900 via-indigo-950 to-slate-950 text-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-indigo-950 via-slate-950 to-black text-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -53,7 +112,9 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
             </div>
             <div>
               <span className="font-bold text-base tracking-wide text-white">SmartHire AI</span>
-              <span className="block text-[10px] text-indigo-300 font-medium">ATS Platform</span>
+              <span className="block text-[10px] text-indigo-300 font-medium">
+                {role === 'ADMIN' ? 'Admin Portal' : role === 'CANDIDATE' ? 'Career Portal' : 'ATS Workspace'}
+              </span>
             </div>
           </div>
           {/* Close/Hide button inside sidebar */}
@@ -66,21 +127,22 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
           </button>
         </div>
 
-        {/* AI Status Badge */}
-        <div className="px-4 py-3 mx-4 my-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+        {/* Role Identity Tag */}
+        <div className="px-4 py-2.5 mx-4 my-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-xs font-medium text-indigo-200">AI Engine Active</span>
+            <RoleBadgeIcon className="w-4 h-4 text-amber-300" />
+            <span className="text-xs font-semibold text-white">{roleBadge.label}</span>
           </div>
-          <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">v2.4</span>
+          <span className={`text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${roleBadge.color}`}>
+            {role}
+          </span>
         </div>
 
         {/* Navigation Section */}
         <div className="px-3 py-2 flex-1 overflow-y-auto space-y-1">
-          <p className="px-3 text-[11px] font-semibold tracking-wider uppercase text-indigo-300/60 mb-2">Navigation</p>
+          <p className="px-3 text-[10px] font-bold tracking-wider uppercase text-indigo-300/50 mb-2">
+            {role === 'ADMIN' ? 'System Management' : role === 'CANDIDATE' ? 'My Career Workspace' : 'Recruitment Pipeline'}
+          </p>
           {links.map(({ to, icon: Icon, label, badge }) => (
             <NavLink
               key={to}
@@ -109,21 +171,23 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
           ))}
         </div>
 
-        {/* Recruiter / User Profile Footer */}
-        <div className="p-4 border-t border-white/10 bg-black/20">
+        {/* User Profile Footer */}
+        <div className="p-4 border-t border-white/10 bg-black/40">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-indigo-500 flex items-center justify-center font-bold text-sm text-white shadow-md shrink-0">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-indigo-600 flex items-center justify-center font-bold text-sm text-white shadow-md shrink-0">
               {user?.avatar ? (
                 <img src={user.avatar} alt={user?.first_name || 'User'} className="w-full h-full object-cover" />
               ) : (
-                user?.first_name ? user.first_name[0] : 'A'
+                user?.first_name ? user.first_name[0] : 'U'
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">{user?.first_name} {user?.last_name || 'Admin'}</p>
-              <p className="text-[11px] text-indigo-300 truncate">{user?.email || 'admin@smarthire.com'}</p>
+              <p className="text-xs font-semibold text-white truncate">
+                {user?.first_name} {user?.last_name || ''}
+              </p>
+              <p className="text-[11px] text-indigo-300 truncate">{user?.email || 'user@smarthire.com'}</p>
             </div>
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" title="Verified Recruiter" />
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" title="Verified User" />
           </div>
         </div>
       </aside>
