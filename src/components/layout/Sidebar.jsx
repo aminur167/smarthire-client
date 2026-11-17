@@ -112,8 +112,12 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
         {/* Recruiter / User Profile Footer */}
         <div className="p-4 border-t border-white/10 bg-black/20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-sm text-white shadow-md">
-              {user?.first_name ? user.first_name[0] : 'A'}
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-indigo-500 flex items-center justify-center font-bold text-sm text-white shadow-md shrink-0">
+              {user?.avatar ? (
+                <img src={user.avatar} alt={user?.first_name || 'User'} className="w-full h-full object-cover" />
+              ) : (
+                user?.first_name ? user.first_name[0] : 'A'
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-white truncate">{user?.first_name} {user?.last_name || 'Admin'}</p>

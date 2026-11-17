@@ -67,8 +67,12 @@ export default function Navbar({ sidebarOpen, toggleSidebar }) {
               onClick={() => setShowMenu(!showMenu)}
               className="flex items-center gap-2 pl-2 sm:pl-3 pr-2 py-1.5 rounded-full hover:bg-gray-50 transition-colors border border-gray-100"
             >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                {getInitials(user?.first_name + ' ' + (user?.last_name || 'Admin'))}
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0">
+                {user?.avatar ? (
+                  <img src={user.avatar} alt={user?.first_name || 'User'} className="w-full h-full object-cover" />
+                ) : (
+                  getInitials(user?.first_name + ' ' + (user?.last_name || 'Admin'))
+                )}
               </div>
               <span className="hidden md:inline text-xs font-medium text-gray-700">
                 {user?.first_name || 'Admin'}
