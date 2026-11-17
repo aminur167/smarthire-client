@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:8000/api/v1';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://smarthire-api-6dew.onrender.com/api/v1';
 
 export const USER_ROLES = { ADMIN: 'ADMIN', RECRUITER: 'RECRUITER', CANDIDATE: 'CANDIDATE' };
 
