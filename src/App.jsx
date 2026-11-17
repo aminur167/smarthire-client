@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import Layout from './components/layout/Layout';
 import Loader from './components/common/Loader';
+import toast from 'react-hot-toast';
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -27,6 +29,40 @@ function PublicRoute({ children }) {
 }
 
 export default function App() {
+  const { loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
+  // Listen for Google OAuth redirect callback with access_token in URL hash
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token=')) {
+      const params = new URLSearchParams(hash.replace('#', '?'));
+      const token = params.get('access_token');
+      if (token) {
+        window.history.replaceState(null, '', window.location.pathname);
+        toast.loading('Authenticating with Google...', { id: 'google-auth' });
+        fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => res.json())
+          .then(async (profile) => {
+            await loginWithGoogle({
+              email: profile.email,
+              first_name: profile.given_name || profile.name?.split(' ')[0] || 'User',
+              last_name: profile.family_name || profile.name?.split(' ').slice(1).join(' ') || '',
+              avatar: profile.picture || null,
+              role: 'RECRUITER',
+            });
+            toast.success(`Welcome back, ${profile.name || profile.email}!`, { id: 'google-auth' });
+            navigate('/dashboard');
+          })
+          .catch(() => {
+            toast.error('Google authentication verification failed.', { id: 'google-auth' });
+          });
+      }
+    }
+  }, [loginWithGoogle, navigate]);
+
   return (
     <Routes>
       {/* Public */}

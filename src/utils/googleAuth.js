@@ -1,23 +1,26 @@
 /**
- * Official Google Identity Services & OAuth2 Popup Helper
- * Triggers Google's genuine account selector dialog with all user accounts.
+ * Google Identity Services & OAuth2 Architecture
+ * Triggers Google's official browser account chooser with all signed-in Google accounts on the user's laptop.
  */
 
 export const triggerGoogleAuth = ({ clientId, onSuccess, onError }) => {
-  // If client ID is empty or not provided
-  const activeClientId = clientId || import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const activeClientId =
+    clientId ||
+    localStorage.getItem('google_client_id') ||
+    import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   if (!activeClientId) {
     onError?.('MISSING_CLIENT_ID');
     return;
   }
 
-  // 1. Preferred modern Google Identity Services SDK
+  // 1. Google Identity Services (GSI) TokenClient — Official Google Account Selector Dialog
   if (typeof window !== 'undefined' && window.google?.accounts?.oauth2) {
     try {
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: activeClientId,
         scope: 'email profile openid',
+        prompt: 'select_account',
         callback: async (tokenResponse) => {
           if (tokenResponse.error) {
             onError?.(tokenResponse.error_description || tokenResponse.error);
@@ -25,14 +28,13 @@ export const triggerGoogleAuth = ({ clientId, onSuccess, onError }) => {
           }
 
           try {
-            // Fetch real user info directly from Google's userinfo API
             const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
               headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
             });
             const profile = await res.json();
             onSuccess?.(profile);
           } catch (err) {
-            onError?.('Failed to fetch user details from Google.');
+            onError?.('Failed to fetch user profile details from Google API.');
           }
         },
       });
@@ -41,20 +43,20 @@ export const triggerGoogleAuth = ({ clientId, onSuccess, onError }) => {
       client.requestAccessToken({ prompt: 'select_account' });
       return;
     } catch (err) {
-      console.warn('GSI TokenClient error, falling back to popup window', err);
+      console.warn('GSI TokenClient initialization warning, using popup fallback', err);
     }
   }
 
-  // 2. Direct browser OAuth2 Popup Fallback
+  // 2. Direct browser OAuth2 Popup Fallback to accounts.google.com
   const redirectUri = window.location.origin;
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
     activeClientId
   )}&redirect_uri=${encodeURIComponent(
     redirectUri
-  )}&response_type=token&scope=email%20profile&prompt=select_account`;
+  )}&response_type=token&scope=email%20profile%20openid&prompt=select_account`;
 
   const width = 500;
-  const height = 600;
+  const height = 620;
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2.5;
 
