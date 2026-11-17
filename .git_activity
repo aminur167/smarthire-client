@@ -35,3 +35,4 @@
 2026-11-16 21:15:00 - test: end-to-end audit of candidate application and interview scheduling flows
 2026-11-17 09:20:10 - feat(theme): finalize ATS dashboard visual polish and responsiveness
 2026-11-17 11:50:35 - refactor(layout): enhance sidebar toggle with accessible aria labels and shortcuts
+2026-11-17 14:35:20 - docs: update production deployment notes and environment setup
