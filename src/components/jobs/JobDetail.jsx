@@ -1,8 +1,8 @@
-import { MapPin, Clock, DollarSign, Users, ArrowLeft, Calendar } from 'lucide-react';
+import { MapPin, Clock, DollarSign, Users, ArrowLeft, Calendar, CheckCircle2 } from 'lucide-react';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
 
-export default function JobDetail({ job, onApply, onBack }) {
+export default function JobDetail({ job, onApply, onBack, alreadyApplied = false }) {
   if (!job) return null;
   return (
     <div>
@@ -37,7 +37,7 @@ export default function JobDetail({ job, onApply, onBack }) {
             </div>
           </div>
         )}
-        {onApply && <div className="mt-6 pt-5 border-t border-gray-100"><Button onClick={() => onApply(job)}>Apply Now</Button></div>}
+        {onApply && <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-gray-100 pt-5">{alreadyApplied ? <span className="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-800"><CheckCircle2 className="h-4 w-4"/>Application submitted</span> : <Button onClick={() => onApply(job)}>Apply for this role</Button>}<span className="text-xs text-gray-400">You can track your application from your workspace.</span></div>}
       </div>
     </div>
   );

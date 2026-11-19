@@ -1,21 +1,27 @@
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://smarthire-api-6dew.onrender.com/api/v1';
+export const API_ORIGIN = new URL(API_BASE_URL).origin;
+export const getMediaUrl = (value) => {
+  if (!value) return null;
+  try { return new URL(value, `${API_ORIGIN}/`).toString(); }
+  catch { return value; }
+};
 
 export const USER_ROLES = { ADMIN: 'ADMIN', RECRUITER: 'RECRUITER', CANDIDATE: 'CANDIDATE' };
 
 export const APPLICATION_STATUSES = {
-  NEW: { label: 'New', color: 'bg-blue-100 text-blue-700' },
-  SCREENING: { label: 'Screening', color: 'bg-purple-100 text-purple-700' },
-  QUALIFIED: { label: 'Qualified', color: 'bg-indigo-100 text-indigo-700' },
-  INTERVIEW_SCHEDULED: { label: 'Scheduled', color: 'bg-amber-100 text-amber-700' },
-  INTERVIEWED: { label: 'Interviewed', color: 'bg-cyan-100 text-cyan-700' },
-  OFFERED: { label: 'Offered', color: 'bg-emerald-100 text-emerald-700' },
-  HIRED: { label: 'Hired', color: 'bg-green-100 text-green-700' },
-  REJECTED: { label: 'Rejected', color: 'bg-red-100 text-red-700' },
+  NEW: { label: 'New', color: 'bg-slate-100 text-slate-700' },
+  SCREENING: { label: 'Screening', color: 'bg-sky-50 text-sky-800' },
+  QUALIFIED: { label: 'Qualified', color: 'bg-indigo-50 text-indigo-800' },
+  INTERVIEW_SCHEDULED: { label: 'Interview scheduled', color: 'bg-amber-50 text-amber-800' },
+  INTERVIEWED: { label: 'Interviewed', color: 'bg-violet-50 text-violet-800' },
+  OFFERED: { label: 'Offer extended', color: 'bg-emerald-50 text-emerald-800' },
+  HIRED: { label: 'Hired', color: 'bg-green-50 text-green-800' },
+  REJECTED: { label: 'Declined', color: 'bg-rose-50 text-rose-800' },
 };
 
 export const JOB_STATUSES = {
-  PUBLISHED: { label: 'In progress', color: 'bg-green-100 text-green-700' },
-  ON_HOLD: { label: 'Hold', color: 'bg-amber-100 text-amber-700' },
+  PUBLISHED: { label: 'Published', color: 'bg-emerald-50 text-emerald-800' },
+  ON_HOLD: { label: 'On hold', color: 'bg-amber-50 text-amber-800' },
   DRAFT: { label: 'Draft', color: 'bg-gray-100 text-gray-600' },
   CLOSED: { label: 'Closed', color: 'bg-red-100 text-red-700' },
 };

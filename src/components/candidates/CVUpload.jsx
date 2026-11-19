@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle2 } from 'lucide-react';
+import { Upload, FileText, CheckCircle2, TriangleAlert } from 'lucide-react';
 import { uploadResume } from '../../api/candidates';
 import toast from 'react-hot-toast';
 import Button from '../common/Button';
@@ -9,11 +9,13 @@ export default function CVUpload({ onSuccess }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState(null);
+  const [parseStatus, setParseStatus] = useState(null);
+  const [fileError, setFileError] = useState('');
 
-  const onDrop = useCallback((accepted) => { if (accepted.length) setFile(accepted[0]); }, []);
+  const onDrop = useCallback((accepted) => { setFileError(''); if (accepted.length) setFile(accepted[0]); }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop, accept: { 'application/pdf': ['.pdf'] }, maxFiles: 1, maxSize: 10 * 1024 * 1024,
+    onDrop, onDropRejected: (rejected) => setFileError(rejected[0]?.errors?.[0]?.code === 'file-too-large' ? 'Choose a PDF under 10 MB.' : 'Choose one PDF file to upload.'), accept: { 'application/pdf': ['.pdf'] }, maxFiles: 1, maxSize: 10 * 1024 * 1024,
   });
 
   const handleUpload = async () => {
@@ -24,7 +26,9 @@ export default function CVUpload({ onSuccess }) {
       formData.append('resume', file);
       const { data } = await uploadResume(formData);
       setResult(data.parsed_data);
-      toast.success('Resume uploaded and parsed!');
+      setParseStatus(data.parse_status || 'complete');
+      if (data.parse_status === 'needs_review') toast('Resume saved. Please check your profile details manually.', { icon: '!' });
+      else toast.success('Resume uploaded and parsed.');
       onSuccess?.(data);
     } catch (err) { toast.error(err.response?.data?.error || 'Upload failed'); }
     setUploading(false);
@@ -50,11 +54,14 @@ export default function CVUpload({ onSuccess }) {
         )}
       </div>
 
+      {fileError && <p role="alert" className="flex items-center gap-2 text-xs text-rose-700"><TriangleAlert className="h-4 w-4"/>{fileError}</p>}
+
       {file && <Button onClick={handleUpload} loading={uploading} className="w-full">Upload & Parse Resume</Button>}
 
       {result && (
         <div className="card bg-green-50 border-green-200">
-          <div className="flex items-center gap-2 mb-3"><CheckCircle2 className="w-5 h-5 text-green-600" /><h3 className="font-semibold text-green-800">Resume Parsed Successfully</h3></div>
+          <div className="flex items-center gap-2 mb-3">{parseStatus === 'needs_review' ? <TriangleAlert className="w-5 h-5 text-amber-600"/> : <CheckCircle2 className="w-5 h-5 text-green-600"/>}<h3 className={`font-semibold ${parseStatus === 'needs_review' ? 'text-amber-800' : 'text-green-800'}`}>{parseStatus === 'needs_review' ? 'Resume saved · review needed' : 'Resume parsed successfully'}</h3></div>
+          {result.error && <p className="mb-3 text-xs text-amber-800">{result.error}</p>}
           <div className="grid grid-cols-2 gap-2 text-sm">
             {result.email && <p><span className="text-gray-500">Email:</span> {result.email}</p>}
             {result.phone && <p><span className="text-gray-500">Phone:</span> {result.phone}</p>}

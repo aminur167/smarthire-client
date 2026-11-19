@@ -12,14 +12,15 @@ const variants = {
 
 const sizes = { sm: 'px-3 py-1.5 text-xs', md: 'px-5 py-2.5 text-sm', lg: 'px-6 py-3 text-base' };
 
-export default function Button({ children, variant = 'primary', size = 'md', loading, className, ...props }) {
+export default function Button({ children, variant = 'primary', size = 'md', loading, disabled, type = 'button', className, ...props }) {
   return (
     <button
       className={classNames(
         'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
         variants[variant], sizes[size], className
       )}
-      disabled={loading || props.disabled}
+      type={type}
+      disabled={loading || disabled}
       {...props}
     >
       {loading && <Loader2 className="w-4 h-4 animate-spin" />}

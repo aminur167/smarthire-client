@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { getAdminStats } from '../../api/dashboard';
 import toast from 'react-hot-toast';
+import Loader from '../common/Loader';
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
@@ -32,19 +33,8 @@ export default function AdminDashboard() {
       const res = await getAdminStats();
       setData(res.data);
     } catch {
-      // Fallback demo data if endpoint is loading
-      setData({
-        users: { total: 18, admins: 2, recruiters: 4, candidates: 12 },
-        platform: { total_jobs: 10, active_jobs: 8, total_applications: 21, total_interviews: 8 },
-        recent_users: [
-          { id: 18, full_name: 'Aminur Rahman', email: 'aminurhstu23@gmail.com', role: 'RECRUITER', is_verified: true, date_joined: '2026-11-17' },
-          { id: 1, full_name: 'System Admin', email: 'admin@smarthire.com', role: 'ADMIN', is_verified: true, date_joined: '2026-10-28' },
-          { id: 2, full_name: 'HR Recruiter', email: 'recruiter@smarthire.com', role: 'RECRUITER', is_verified: true, date_joined: '2026-10-29' },
-          { id: 3, full_name: 'Sarah Connor', email: 'sarah.c@example.com', role: 'CANDIDATE', is_verified: true, date_joined: '2026-11-01' },
-          { id: 4, full_name: 'David Miller', email: 'david.m@example.com', role: 'CANDIDATE', is_verified: false, date_joined: '2026-11-05' },
-        ],
-        system_health: { api_status: 'OPERATIONAL', database: 'CONNECTED', ai_engine: 'READY' },
-      });
+      setData(null);
+      toast.error('Could not load platform data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -58,6 +48,8 @@ export default function AdminDashboard() {
     const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
     return matchesSearch && matchesRole;
   });
+
+  if (loading) return <Loader />;
 
   return (
     <div className="space-y-6">
@@ -78,11 +70,11 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2 bg-black/30 p-2.5 rounded-xl border border-white/10 backdrop-blur-sm self-start sm:self-auto">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>API Online</span>
+            <span>{data ? 'Live platform data' : 'Data unavailable'}</span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
             <Sparkles className="w-3 h-3 text-indigo-400" />
-            <span>AI Matcher Active</span>
+            <span>Skills-based matching</span>
           </div>
         </div>
       </div>
@@ -96,11 +88,11 @@ export default function AdminDashboard() {
               <Users className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-gray-900">{data?.users?.total || 18}</p>
+          <p className="text-3xl font-extrabold text-gray-900">{data?.users?.total ?? 0}</p>
           <div className="flex items-center gap-2 text-xs text-gray-500 pt-1">
-            <span className="text-indigo-600 font-semibold">{data?.users?.recruiters || 4} Recruiters</span>
+            <span className="text-indigo-600 font-semibold">{data?.users?.recruiters ?? 0} Recruiters</span>
             <span>•</span>
-            <span className="text-emerald-600 font-semibold">{data?.users?.candidates || 12} Candidates</span>
+            <span className="text-emerald-600 font-semibold">{data?.users?.candidates ?? 0} Candidates</span>
           </div>
         </div>
 
@@ -111,10 +103,10 @@ export default function AdminDashboard() {
               <Briefcase className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_jobs || 10}</p>
+          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_jobs ?? 0}</p>
           <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold pt-1">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>{data?.platform?.active_jobs || 8} Active Postings</span>
+            <span>{data?.platform?.active_jobs ?? 0} Active Postings</span>
           </div>
         </div>
 
@@ -125,10 +117,10 @@ export default function AdminDashboard() {
               <FolderOpen className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_applications || 21}</p>
+          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_applications ?? 0}</p>
           <div className="flex items-center gap-1.5 text-xs text-amber-600 font-semibold pt-1">
             <Activity className="w-3.5 h-3.5" />
-            <span>Across 8 Departments</span>
+            <span>Applications across the platform</span>
           </div>
         </div>
 
@@ -139,7 +131,7 @@ export default function AdminDashboard() {
               <CalendarDays className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_interviews || 8}</p>
+          <p className="text-3xl font-extrabold text-gray-900">{data?.platform?.total_interviews ?? 0}</p>
           <div className="flex items-center gap-1.5 text-xs text-gray-500 pt-1">
             <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
             <span>High conversion throughput</span>
@@ -233,12 +225,7 @@ export default function AdminDashboard() {
                   </td>
                   <td className="py-3.5 text-xs text-gray-500">{u.date_joined}</td>
                   <td className="py-3.5 text-right pr-2">
-                    <button
-                      onClick={() => toast.success(`User permissions verified for ${u.email}`)}
-                      className="px-2.5 py-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors"
-                    >
-                      Manage
-                    </button>
+                    <span className="px-2.5 py-1 text-[11px] font-medium text-gray-400">View only</span>
                   </td>
                 </tr>
               ))}

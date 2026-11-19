@@ -6,5 +6,7 @@ export const getRequestsSummary = () => api.get('/dashboard/requests/');
 export const getRecentActivity = () => api.get('/dashboard/activity/');
 export const getAdminStats = () => api.get('/dashboard/admin-stats/');
 export const getCandidatePortal = () => api.get('/dashboard/candidate-portal/');
+export const getReports = (params) => api.get('/dashboard/reports/', { params });
 export const getNotifications = () => api.get('/notifications/');
 export const getUnreadCount = () => api.get('/notifications/unread-count/');
+export const markNotificationRead = (id) => api.post(id ? `/notifications/mark-read/${id}/` : '/notifications/mark-read/');

@@ -4,7 +4,7 @@ import Badge from '../common/Badge';
 export default function JobCard({ job, onClick }) {
   const statusColor = { PUBLISHED: 'green', ON_HOLD: 'amber', DRAFT: 'gray', CLOSED: 'red' };
   return (
-    <div onClick={() => onClick?.(job)} className="card hover:shadow-md transition-all cursor-pointer group hover:border-primary-200">
+    <button type="button" onClick={() => onClick?.(job)} className="card w-full text-left hover:shadow-md transition-all cursor-pointer group hover:border-primary-200">
       <div className="flex items-start justify-between mb-3">
         <div>
           <h3 className="font-bold text-gray-800 group-hover:text-primary-600 transition-colors">{job.title}</h3>
@@ -31,6 +31,6 @@ export default function JobCard({ job, onClick }) {
           {job.skills_required.length > 5 && <span className="text-[10px] text-gray-400">+{job.skills_required.length - 5}</span>}
         </div>
       )}
-    </div>
+    </button>
   );
 }

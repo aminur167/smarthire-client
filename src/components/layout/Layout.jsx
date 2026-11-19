@@ -17,14 +17,14 @@ export default function Layout() {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#f6f8fb] flex">
       {/* Sidebar with overlay for mobile */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} closeSidebar={closeSidebar} />
 
       {/* Main area with dynamic margin based on sidebar state */}
-      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'md:ml-[260px]' : 'ml-0'}`}>
         <Navbar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className="mt-24 p-6 flex-1">
+        <main className="mt-[94px] px-4 py-6 sm:px-6 lg:px-9 flex-1 max-w-[1680px] w-full mx-auto">
           <Outlet />
         </main>
       </div>

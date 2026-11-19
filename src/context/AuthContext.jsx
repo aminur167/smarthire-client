@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
-import { login as loginApi, register as registerApi, googleLogin as googleLoginApi, getProfile } from '../api/auth';
+import { login as loginApi, register as registerApi, getProfile } from '../api/auth';
 
 export const AuthContext = createContext(null);
 
@@ -9,11 +9,17 @@ export function AuthProvider({ children }) {
 
   const loadUser = useCallback(async () => {
     const token = localStorage.getItem('access_token');
-    if (!token) { setLoading(false); return; }
+    if (!token) { setUser(null); setLoading(false); return null; }
     try {
       const { data } = await getProfile();
       setUser(data);
-    } catch { localStorage.clear(); setUser(null); }
+      setLoading(false);
+      return data;
+    } catch {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      setUser(null);
+    }
     setLoading(false);
   }, []);
 
@@ -35,18 +41,14 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const loginWithGoogle = async (googleData) => {
-    const { data } = await googleLoginApi(googleData);
-    localStorage.setItem('access_token', data.tokens.access);
-    localStorage.setItem('refresh_token', data.tokens.refresh);
-    setUser(data.user);
-    return data;
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    setUser(null);
   };
 
-  const logout = () => { localStorage.clear(); setUser(null); };
-
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, loginWithGoogle, logout, isAuthenticated: !!user, loadUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, isAuthenticated: !!user, loadUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
 
-const api = axios.create({ baseURL: API_BASE_URL, headers: { 'Content-Type': 'application/json' } });
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 20000, headers: { 'Content-Type': 'application/json' } });
+
+const clearSession = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refresh_token');
+};
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
@@ -21,12 +26,12 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refresh_token');
       if (refresh) {
         try {
-          const { data } = await axios.post(`${API_BASE_URL}/auth/token/refresh/`, { refresh });
+          const { data } = await axios.post(`${API_BASE_URL}/auth/token/refresh/`, { refresh }, { timeout: 20000 });
           localStorage.setItem('access_token', data.access);
           original.headers.Authorization = `Bearer ${data.access}`;
           return api(original);
-        } catch { localStorage.clear(); window.location.href = '/login'; }
-      } else { localStorage.clear(); window.location.href = '/login'; }
+        } catch { clearSession(); window.location.href = '/login'; }
+      } else { clearSession(); window.location.href = '/login'; }
     }
     return Promise.reject(error);
   }

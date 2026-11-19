@@ -17,6 +17,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { getMediaUrl } from '../../utils/constants';
 
 export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
   const { user } = useAuth();
@@ -27,10 +28,10 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
     if (role === 'ADMIN') {
       return [
         { to: '/dashboard', icon: LayoutDashboard, label: 'Admin Console', badge: null },
-        { to: '/talent-pool', icon: Users, label: 'User Directory', badge: '18' },
-        { to: '/jobs', icon: Briefcase, label: 'Job Moderation', badge: '10' },
-        { to: '/applications', icon: FolderOpen, label: 'Applications Audit', badge: '21' },
-        { to: '/interviews', icon: CalendarDays, label: 'Interviews Schedule', badge: '8' },
+        { to: '/talent-pool', icon: Users, label: 'User Directory', badge: null },
+        { to: '/jobs', icon: Briefcase, label: 'Job Moderation', badge: null },
+        { to: '/applications', icon: FolderOpen, label: 'Applications Audit', badge: null },
+        { to: '/interviews', icon: CalendarDays, label: 'Interviews Schedule', badge: null },
         { to: '/reports', icon: BarChart3, label: 'Platform Telemetry', badge: null },
         { to: '/profile', icon: Settings, label: 'System Settings', badge: null },
       ];
@@ -39,23 +40,23 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
     if (role === 'CANDIDATE') {
       return [
         { to: '/dashboard', icon: LayoutDashboard, label: 'Career Dashboard', badge: null },
-        { to: '/jobs', icon: Briefcase, label: 'Explore Open Jobs', badge: '10' },
+        { to: '/jobs', icon: Briefcase, label: 'Explore Open Jobs', badge: null },
         { to: '/applications', icon: FileText, label: 'My Applications', badge: null },
         { to: '/interviews', icon: CalendarDays, label: 'My Interviews', badge: null },
         { to: '/profile', icon: Sparkles, label: 'Resume & Skills AI', badge: null },
-        { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: '3' },
+        { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: null },
       ];
     }
 
     // Default: RECRUITER
     return [
       { to: '/dashboard', icon: LayoutDashboard, label: 'ATS Dashboard', badge: null },
-      { to: '/applications', icon: FolderOpen, label: 'Candidate Pipeline', badge: '21' },
-      { to: '/jobs', icon: Briefcase, label: 'Job Openings', badge: '10' },
-      { to: '/talent-pool', icon: Users, label: 'AI Talent Pool', badge: '15' },
-      { to: '/interviews', icon: CalendarDays, label: 'Interviews', badge: '8' },
+      { to: '/applications', icon: FolderOpen, label: 'Candidate Pipeline', badge: null },
+      { to: '/jobs', icon: Briefcase, label: 'Job Openings', badge: null },
+      { to: '/talent-pool', icon: Users, label: 'AI Talent Pool', badge: null },
+      { to: '/interviews', icon: CalendarDays, label: 'Interviews', badge: null },
       { to: '/reports', icon: BarChart3, label: 'Hiring Analytics', badge: null },
-      { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: '3' },
+      { to: '/notifications-page', icon: Bell, label: 'Notifications', badge: null },
       { to: '/profile', icon: Settings, label: 'Profile Settings', badge: null },
     ];
   };
@@ -65,20 +66,20 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
   const getRoleBadge = () => {
     if (role === 'ADMIN') {
       return {
-        label: 'Platform Admin',
+        label: 'Admin workspace',
         color: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
         icon: Crown,
       };
     }
     if (role === 'CANDIDATE') {
       return {
-        label: 'Job Seeker',
+        label: 'Candidate workspace',
         color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
         icon: UserCheck,
       };
     }
     return {
-      label: 'Verified Recruiter',
+      label: 'Recruiter workspace',
       color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
       icon: ShieldCheck,
     };
@@ -100,19 +101,19 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-indigo-950 via-slate-950 to-black text-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-screen w-[260px] bg-[#102b27] text-white z-50 flex flex-col shadow-xl shadow-slate-900/10 transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Header / Brand */}
         <div className="flex items-center justify-between px-5 h-16 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 bg-[#c8f169] rounded-xl flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-[#163c34]" />
             </div>
             <div>
-              <span className="font-bold text-base tracking-wide text-white">SmartHire AI</span>
-              <span className="block text-[10px] text-indigo-300 font-medium">
+              <span className="font-extrabold text-base tracking-tight text-white">SmartHire</span>
+              <span className="block text-[10px] text-emerald-100/60 font-medium">
                 {role === 'ADMIN' ? 'Admin Portal' : role === 'CANDIDATE' ? 'Career Portal' : 'ATS Workspace'}
               </span>
             </div>
@@ -153,8 +154,8 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
               className={({ isActive }) =>
                 `flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-semibold'
-                    : 'text-indigo-200/80 hover:bg-white/10 hover:text-white'
+                    ? 'bg-[#c8f169] text-[#193d34] shadow-sm font-bold'
+                    : 'text-emerald-50/65 hover:bg-white/10 hover:text-white'
                 }`
               }
             >
@@ -176,7 +177,7 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden bg-indigo-600 flex items-center justify-center font-bold text-sm text-white shadow-md shrink-0">
               {user?.avatar ? (
-                <img src={user.avatar} alt={user?.first_name || 'User'} className="w-full h-full object-cover" />
+                <img src={getMediaUrl(user.avatar)} alt={user?.first_name || 'User'} className="w-full h-full object-cover" />
               ) : (
                 user?.first_name ? user.first_name[0] : 'U'
               )}
@@ -187,7 +188,7 @@ export default function Sidebar({ isOpen, toggleSidebar, closeSidebar }) {
               </p>
               <p className="text-[11px] text-indigo-300 truncate">{user?.email || 'user@smarthire.com'}</p>
             </div>
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" title="Verified User" />
+            {user?.is_verified && <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" title="Verified account" />}
           </div>
         </div>
       </aside>

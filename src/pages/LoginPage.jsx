@@ -1,87 +1,35 @@
-import { Briefcase, Sparkles, ShieldCheck, CheckCircle2, Users, Bot } from 'lucide-react';
+import { ArrowUpRight, BriefcaseBusiness, Check, CircleUserRound, FileSearch2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import LoginForm from '../components/auth/LoginForm';
 
+const capabilities = [
+  { icon: FileSearch2, title: 'One clear candidate pipeline', detail: 'Keep applications, decisions and interview steps together.' },
+  { icon: Sparkles, title: 'Understandable skill matching', detail: 'See relevant skills and gaps alongside match scores.' },
+  { icon: ShieldCheck, title: 'Role-aware workspaces', detail: 'Give recruiters, candidates and admins the right tools.' },
+];
+
 export default function LoginPage() {
-  return (
-    <div className="min-h-screen flex bg-gray-50">
-      {/* Left: Enterprise Brand Hero */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 items-center justify-center p-12 relative overflow-hidden">
-        {/* Glow decorative orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="text-white max-w-lg relative z-10 space-y-8">
-          {/* Logo & Headline */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-indigo-300 backdrop-blur-md mb-6">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>Next-Gen Talent Acquisition Suite</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-              SmartHire <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">AI</span>
-            </h1>
-            <p className="text-base text-indigo-200/80 mt-3 leading-relaxed">
-              AI-Powered Recruitment Management System engineered for high-velocity hiring teams and elite engineering talent.
-            </p>
-          </div>
-
-          {/* Feature Highlights Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-300 mb-2">
-                <Bot className="w-4 h-4" />
-              </div>
-              <h3 className="text-sm font-bold text-white">AI Resume Matcher</h3>
-              <p className="text-xs text-indigo-200/70">NLP parsing & candidate scoring engine</p>
-            </div>
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
-              <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-300 mb-2">
-                <Users className="w-4 h-4" />
-              </div>
-              <h3 className="text-sm font-bold text-white">Talent Pipelines</h3>
-              <p className="text-xs text-indigo-200/70">Multi-stage applicant tracking & kanban</p>
-            </div>
-          </div>
-
-          {/* Social Proof / Trust banner */}
-          <div className="p-4 rounded-2xl bg-black/30 border border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-indigo-900">AR</div>
-                <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-indigo-900">HR</div>
-                <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-indigo-900">JD</div>
-              </div>
-              <p className="text-xs text-indigo-200 font-medium pl-1">Trusted by 500+ Hiring Managers</p>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-emerald-400 font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5" /> 99.9% Uptime
-            </div>
-          </div>
-        </div>
+  return <main className="min-h-screen bg-white lg:grid lg:grid-cols-[1.06fr_.94fr]">
+    <section className="relative hidden min-h-screen overflow-hidden bg-[#143c34] px-12 py-10 text-white lg:flex lg:flex-col xl:px-[9%]">
+      <div className="absolute -right-28 top-1/4 h-[470px] w-[470px] rounded-full border border-white/[.08]"/><div className="absolute -right-7 top-[32%] h-[300px] w-[300px] rounded-full border border-white/[.08]"/><div className="absolute bottom-[-180px] left-[-110px] h-[420px] w-[420px] rounded-full bg-[#b7eb68]/[.07] blur-3xl"/>
+      <Link to="/login" className="relative z-10 inline-flex w-fit items-center gap-3" aria-label="SmartHire home"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#d5f5a4] text-[#163d34]"><BriefcaseBusiness className="h-5 w-5"/></span><span className="font-extrabold tracking-tight">SmartHire<span className="ml-1 text-[#d5f5a4]">/</span></span></Link>
+      <div className="relative z-10 my-auto max-w-xl py-16">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[.07] px-3 py-1.5 text-xs font-semibold text-[#def6c1]"><Sparkles className="h-3.5 w-3.5"/> Recruitment, brought into focus</span>
+        <h1 className="mt-7 max-w-lg text-5xl font-extrabold leading-[1.08] tracking-[-.055em] xl:text-[58px]">Make every hire a more <span className="text-[#d5f5a4]">thoughtful</span> one.</h1>
+        <p className="mt-5 max-w-lg text-[15px] leading-7 text-emerald-50/70">A practical workspace for hiring teams to find talent, manage applications and bring better conversations forward.</p>
+        <div className="mt-10 space-y-5">{capabilities.map(({ icon: Icon, title, detail }) => <div key={title} className="flex items-start gap-3.5"><span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.08] text-[#d5f5a4]"><Icon className="h-4 w-4"/></span><div><h2 className="text-sm font-bold">{title}</h2><p className="mt-1 text-xs leading-5 text-emerald-50/55">{detail}</p></div></div>)}</div>
       </div>
+      <p className="relative z-10 text-xs text-emerald-50/45">Built for the people behind every great team.</p>
+    </section>
 
-      {/* Right: Form Container */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-100">
-          {/* Mobile Brand */}
-          <div className="lg:hidden flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/30">
-              <Briefcase className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-base font-extrabold text-gray-900 leading-none">SmartHire</h1>
-              <p className="text-[10px] text-gray-400 leading-none mt-1">Enterprise ATS Platform</p>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Welcome back</h2>
-            <p className="text-xs text-gray-500 mt-1">Sign in with your enterprise credentials to access the ATS workspace</p>
-          </div>
-
-          <LoginForm />
-        </div>
+    <section className="flex min-h-screen flex-col px-5 py-6 sm:px-10 lg:px-12 xl:px-[13%]">
+      <div className="flex items-center justify-between lg:justify-end"><Link to="/login" className="inline-flex items-center gap-2 font-extrabold tracking-tight text-slate-900 lg:hidden"><span className="grid h-8 w-8 place-items-center rounded-lg bg-[#d5f5a4] text-[#163d34]"><BriefcaseBusiness className="h-4 w-4"/></span>SmartHire</Link><span className="text-xs text-slate-500">New to SmartHire? <Link className="font-bold text-emerald-800 hover:text-emerald-700" to="/register">Create account <ArrowUpRight className="inline h-3.5 w-3.5"/></Link></span></div>
+      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col justify-center py-12">
+        <div className="mb-8"><span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#edf7e2] text-[#47713a]"><CircleUserRound className="h-5 w-5"/></span><h2 className="mt-6 text-[32px] font-extrabold leading-tight tracking-[-.045em] text-slate-950">Welcome back</h2><p className="mt-2 text-sm leading-6 text-slate-500">Sign in to continue to your SmartHire workspace.</p></div>
+        <LoginForm />
+        <div className="mt-8 flex items-center justify-center gap-2 text-[11px] text-slate-400"><Check className="h-3.5 w-3.5 text-emerald-700"/> Your account is protected by secure token-based sign-in</div>
       </div>
-    </div>
-  );
+      <p className="text-center text-[11px] text-slate-400">© {new Date().getFullYear()} SmartHire · Recruitment workspace</p>
+    </section>
+  </main>;
 }

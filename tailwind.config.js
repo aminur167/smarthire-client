@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { 50: '#EEF2FF', 100: '#E0E7FF', 200: '#C7D2FE', 300: '#A5B4FC', 400: '#818CF8', 500: '#6366F1', 600: '#4F46E5', 700: '#4338CA', 800: '#3730A3', 900: '#312E81' },
-        brand: { light: '#F0EDFF', DEFAULT: '#6C5CE7', dark: '#4A3ABA' },
+        primary: { 50: '#edf7e2', 100: '#d5f5a4', 200: '#b8e17e', 300: '#93c85b', 400: '#70ad45', 500: '#47713a', 600: '#176b50', 700: '#145b45', 800: '#124b3d', 900: '#103c34' },
+        brand: { light: '#edf7e2', DEFAULT: '#176b50', dark: '#103c34' },
       },
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
     },

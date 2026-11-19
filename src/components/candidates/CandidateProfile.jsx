@@ -1,5 +1,6 @@
 import { getInitials } from '../../utils/helpers';
 import Badge from '../common/Badge';
+import { getMediaUrl } from '../../utils/constants';
 
 export default function CandidateProfile({ profile }) {
   if (!profile) return null;
@@ -9,7 +10,7 @@ export default function CandidateProfile({ profile }) {
   return (
     <div className="card">
       <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-purple-500 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-700 to-emerald-900 flex items-center justify-center text-white text-xl font-bold shadow-lg">
           {getInitials(name)}
         </div>
         <div>
@@ -20,17 +21,23 @@ export default function CandidateProfile({ profile }) {
       </div>
 
       <div className="grid grid-cols-2 gap-4 text-sm">
-        <div><span className="text-gray-400">Experience</span><p className="font-semibold text-gray-700">{profile.experience_years} years</p></div>
+        <div><span className="text-gray-400">Experience</span><p className="font-semibold text-gray-700">{profile.experience_years || 0} years</p></div>
         <div><span className="text-gray-400">Education</span><p className="font-semibold text-gray-700">{profile.education || '—'}</p></div>
         <div><span className="text-gray-400">Expected Salary</span><p className="font-semibold text-gray-700">{profile.expected_salary ? `$${Number(profile.expected_salary).toLocaleString()}` : '—'}</p></div>
         <div><span className="text-gray-400">LinkedIn</span><p className="font-semibold text-primary-600">{profile.linkedin_url ? <a href={profile.linkedin_url} target="_blank" rel="noreferrer">View Profile</a> : '—'}</p></div>
       </div>
 
+      {profile.resume && (
+        <div className="mt-5">
+          <a href={getMediaUrl(profile.resume)} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-100">View resume</a>
+        </div>
+      )}
+
       {profile.skills?.length > 0 && (
         <div className="mt-5 pt-5 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-gray-700 mb-2">Skills</h3>
           <div className="flex flex-wrap gap-2">
-            {profile.skills.map((s) => <Badge key={s} color="indigo">{s}</Badge>)}
+            {profile.skills.map((s) => <Badge key={s} color="emerald">{s}</Badge>)}
           </div>
         </div>
       )}

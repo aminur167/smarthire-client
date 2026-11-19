@@ -21,7 +21,8 @@ export default function JobForm({ onSubmit, initialData, departments = [], loadi
 
   const removeSkill = (s) => setForm({ ...form, skills_required: form.skills_required.filter((x) => x !== s) });
 
-  const handleSubmit = (e) => { e.preventDefault(); onSubmit(form); };
+  const handleSubmit = (e) => { e.preventDefault(); onSubmit({ ...form, status: e.nativeEvent.submitter?.value || 'DRAFT' }); };
+  const localToday = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -60,7 +61,7 @@ export default function JobForm({ onSubmit, initialData, departments = [], loadi
         <Input label="Openings" type="number" name="openings" value={form.openings} onChange={handleChange} min="1" />
       </div>
 
-      <Input label="Deadline" type="date" name="deadline" value={form.deadline} onChange={handleChange} required />
+      <Input label="Application deadline" type="date" name="deadline" min={localToday} value={form.deadline} onChange={handleChange} required />
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
@@ -69,6 +70,10 @@ export default function JobForm({ onSubmit, initialData, departments = [], loadi
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1.5">Requirements</label>
         <textarea name="requirements" value={form.requirements} onChange={handleChange} rows={3} className="input-field" placeholder="Job requirements..." required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">Responsibilities <span className="text-gray-400">(optional)</span></label>
+        <textarea name="responsibilities" value={form.responsibilities} onChange={handleChange} rows={3} className="input-field" placeholder="What will this person work on?" />
       </div>
 
       {/* Skills */}
@@ -81,16 +86,14 @@ export default function JobForm({ onSubmit, initialData, departments = [], loadi
         </div>
         <div className="flex flex-wrap gap-1.5 mt-2">
           {form.skills_required.map((s) => (
-            <span key={s} onClick={() => removeSkill(s)} className="px-2.5 py-1 bg-primary-50 text-primary-700 rounded-lg text-xs font-medium cursor-pointer hover:bg-red-50 hover:text-red-600 transition-colors">
-              {s} ×
-            </span>
+            <button key={s} type="button" onClick={() => removeSkill(s)} aria-label={`Remove ${s}`} className="rounded-lg bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 transition-colors hover:bg-red-50 hover:text-red-600">{s} ×</button>
           ))}
         </div>
       </div>
 
       <div className="flex gap-3 pt-2">
-        <Button type="submit" loading={loading}>Save Job Posting</Button>
-        <Button type="button" variant="outline" onClick={() => onSubmit({ ...form, status: 'PUBLISHED' })} loading={loading}>Publish Now</Button>
+        <Button type="submit" value="DRAFT" variant="secondary" loading={loading}>Save draft</Button>
+        <Button type="submit" value="PUBLISHED" loading={loading}>Publish role</Button>
       </div>
     </form>
   );

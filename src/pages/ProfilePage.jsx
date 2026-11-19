@@ -5,6 +5,7 @@ import CVUpload from '../components/candidates/CVUpload';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import { getInitials } from '../utils/helpers';
+import { getMediaUrl } from '../utils/constants';
 import toast from 'react-hot-toast';
 import {
   Camera,
@@ -39,7 +40,7 @@ export default function ProfilePage() {
     confirm_password: '',
   });
 
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null);
+  const [avatarPreview, setAvatarPreview] = useState(getMediaUrl(user?.avatar));
   const [avatarFile, setAvatarFile] = useState(null);
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
@@ -81,7 +82,8 @@ export default function ProfilePage() {
       formData.append('last_name', form.last_name);
       formData.append('avatar', '');
       await updateProfile(formData);
-      await loadUser();
+      const updatedUser = await loadUser();
+      setAvatarPreview(getMediaUrl(updatedUser?.avatar));
       toast.success('Avatar removed.');
     } catch {
       toast.error('Failed to remove avatar.');
@@ -144,7 +146,7 @@ export default function ProfilePage() {
       {/* Top Banner & Header Card */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Cover gradient */}
-        <div className="h-36 sm:h-44 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-800 relative p-6 flex items-end justify-between">
+        <div className="h-36 sm:h-44 bg-gradient-to-r from-[#103c34] via-[#176b50] to-[#47713a] relative p-6 flex items-end justify-between">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative z-10 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-md border border-white/20">
@@ -164,7 +166,7 @@ export default function ProfilePage() {
             <div className="flex items-end gap-4">
               {/* Avatar Container with upload overlay */}
               <div className="relative group">
-                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl ring-4 ring-white shadow-xl overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl ring-4 ring-white shadow-xl overflow-hidden bg-gradient-to-br from-[#176b50] to-[#47713a] flex items-center justify-center text-white text-3xl font-bold">
                   {avatarPreview ? (
                     <img
                       src={avatarPreview}
@@ -215,14 +217,14 @@ export default function ProfilePage() {
                   <h1 className="text-2xl font-bold text-gray-900 leading-tight">
                     {user?.first_name} {user?.last_name || 'User'}
                   </h1>
-                  <ShieldCheck className="w-5 h-5 text-indigo-600" title="Verified Account" />
+                  {user?.is_verified && <ShieldCheck className="w-5 h-5 text-emerald-700" title="Verified Account" />}
                 </div>
                 <p className="text-sm text-gray-500 flex items-center gap-2">
                   <Mail className="w-3.5 h-3.5 text-gray-400" />
                   {user?.email}
                 </p>
                 <div className="flex items-center gap-2 mt-1.5">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-200">
                     {user?.role || 'RECRUITER'}
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
@@ -251,7 +253,7 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('general')}
               className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
                 activeTab === 'general'
-                  ? 'border-indigo-600 text-indigo-600'
+                  ? 'border-emerald-700 text-emerald-800'
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
@@ -262,7 +264,7 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('security')}
               className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
                 activeTab === 'security'
-                  ? 'border-indigo-600 text-indigo-600'
+                  ? 'border-emerald-700 text-emerald-800'
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
@@ -274,7 +276,7 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab('resume')}
                 className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
                   activeTab === 'resume'
-                    ? 'border-indigo-600 text-indigo-600'
+                    ? 'border-emerald-700 text-emerald-800'
                     : 'border-transparent text-gray-500 hover:text-gray-800'
                 }`}
               >
@@ -328,8 +330,8 @@ export default function ProfilePage() {
                     disabled
                     className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-500 cursor-not-allowed"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    Verified
+                  <span className={`absolute right-3 top-1/2 -translate-y-1/2 rounded-full border px-2 py-0.5 text-[10px] font-bold ${user?.is_verified ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-800'}`}>
+                    {user?.is_verified ? 'Verified' : 'Not verified'}
                   </span>
                 </div>
                 <p className="text-[11px] text-gray-400 mt-1">Email cannot be changed directly.</p>
@@ -353,7 +355,7 @@ export default function ProfilePage() {
                 value={form.bio}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-600 outline-none transition-all text-sm leading-relaxed"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-100 focus:border-emerald-700 outline-none transition-all text-sm leading-relaxed"
                 placeholder="Experienced Talent Acquisition Specialist specializing in scaling high-growth engineering teams..."
               />
               <p className="text-[11px] text-gray-400 mt-1">Brief summary shown to candidates and team members.</p>
